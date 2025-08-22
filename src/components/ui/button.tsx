@@ -18,6 +18,10 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        "banking-primary": "bg-gradient-primary text-white hover:shadow-glow transition-all duration-300",
+        "banking-secondary": "bg-banking-secondary text-white hover:bg-banking-secondary/90",
+        "banking-ghost": "text-white/90 hover:text-white hover:bg-white/10 transition-smooth",
+        "banking-outline": "border border-primary text-primary hover:bg-primary hover:text-white",
       },
       size: {
         default: "h-10 px-4 py-2",
