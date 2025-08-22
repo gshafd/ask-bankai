@@ -40,8 +40,8 @@ export function BankingLayout({ children, title = "BankAssist AI Dashboard" }: B
                 <Badge variant="destructive" className="ml-1 px-1 text-xs">3</Badge>
               </Button>
               
-              <Button variant="banking-ghost" size="sm">
-                <Settings className="w-4 h-4" />
+              <Button variant="banking-outline" size="sm">
+                Dashboard
               </Button>
               
               <Button variant="banking-ghost" size="sm">

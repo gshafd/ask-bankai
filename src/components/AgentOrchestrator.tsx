@@ -94,6 +94,17 @@ export function AgentOrchestrator({ caseId, onComplete }: AgentOrchestratorProps
   ]);
 
   useEffect(() => {
+    // Start first agent immediately
+    setAgents(prev => {
+      const updated = [...prev];
+      if (updated[0]?.status === "pending") {
+        updated[0].status = "processing";
+        updated[0].progress = 15;
+        return updated;
+      }
+      return prev;
+    });
+
     const interval = setInterval(() => {
       setAgents(prev => {
         const updated = [...prev];
@@ -104,54 +115,52 @@ export function AgentOrchestrator({ caseId, onComplete }: AgentOrchestratorProps
           const agent = updated[i];
           
           if (agent.status === "processing" && agent.progress < 100) {
-            agent.progress = Math.min(100, agent.progress + Math.random() * 15);
+            agent.progress = Math.min(100, agent.progress + Math.random() * 12 + 3);
             changed = true;
             
             if (agent.progress >= 100) {
               agent.status = "completed";
               agent.output = getAgentOutput(agent.id);
+              agent.processingTime = Math.random() * 3 + 1.5; // Random processing time
               
               // Start next agent
               if (i + 1 < updated.length && updated[i + 1].status === "pending") {
                 updated[i + 1].status = "processing";
-                updated[i + 1].progress = 10;
+                updated[i + 1].progress = 15;
               }
             }
             break; // Only process one agent at a time
-          }
-          
-          if (agent.status === "pending" && i === 0) {
-            agent.status = "processing";
-            agent.progress = 10;
-            changed = true;
-            break;
           }
         }
 
         // Check if all completed
         if (updated.every(a => a.status === "completed")) {
-          onComplete({
-            caseId,
-            resolution: "Dispute case created successfully",
-            customerMessage: "Your card dispute has been filed. Case #CD-2024-001"
-          });
+          setTimeout(() => {
+            onComplete({
+              caseId,
+              resolution: "Case resolved successfully with full compliance validation",
+              customerMessage: `Your request has been processed. Case ${caseId} is now complete.`
+            });
+          }, 1000);
         }
 
         return changed ? updated : prev;
       });
-    }, 800);
+    }, 600);
 
     return () => clearInterval(interval);
   }, [caseId, onComplete]);
 
   const getAgentOutput = (agentId: string): string => {
     const outputs: Record<string, string> = {
-      auth: "Identity verified ✓ | KYC status: Active | Risk score: Low",
-      entitlement: "Dispute privileges: Active ✓ | Channel permissions: Web/Mobile ✓",
-      knowledge: "Retrieved: Reg E dispute procedures | Timeline: 10 business days | Required docs: Transaction details",
-      resolution: "Dispute case CD-2024-001 created | Transaction flagged | Provisional credit approved",
-      compliance: "Reg E compliant ✓ | Dispute timeline met ✓ | Customer notification required ✓",
-      communication: "Draft message prepared for customer review and approval"
+      intake: "✅ Structured interaction packet created from web portal submission | Channel: Web | Format: JSON",
+      intent: "🎯 Intent: Card Dispute | Confidence: 96.8% | Product: Credit Card | Urgency: High | Reasoning: Keywords 'unauthorized charge', 'dispute' detected with transaction reference",
+      auth: "🔐 Identity verification: PASSED | Customer ID: CUST-12345 verified ✓ | KYC Status: Active | Multi-factor auth completed | Risk Score: Low (2.1/10)",
+      entitlement: "✅ Entitlement Check PASSED | Dispute privileges: Active ✓ | Channel permissions: Web/Mobile/Phone ✓ | Credit card dispute rights: Confirmed | Account standing: Good",
+      knowledge: "📚 Knowledge Retrieved: Reg E dispute procedures (15-day window) | Chargeback process guidelines | Required documentation: Transaction details, merchant info | Reference: KB-2024-CC-001",
+      resolution: "💳 Dispute Case #CD-2024-0847 CREATED ✓ | Transaction $459.99 flagged for investigation | Provisional credit of $459.99 APPROVED | Expected resolution: 7-10 business days",
+      compliance: "⚖️ Regulation E Compliance: VALIDATED ✓ | Dispute filed within 60-day window ✓ | Customer notification timeline: Met ✓ | Audit trail: Generated | Risk assessment: Compliant",
+      communication: "📧 Customer communication drafted: 'Your dispute case #CD-2024-0847 has been filed. Provisional credit of $459.99 applied to your account. Investigation timeline: 7-10 business days. Reference ID: REF-884721'"
     };
     return outputs[agentId] || "Processing complete";
   };
@@ -175,87 +184,110 @@ export function AgentOrchestrator({ caseId, onComplete }: AgentOrchestratorProps
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h3 className="text-xl font-bold">Agent Orchestration Pipeline</h3>
-        <p className="text-muted-foreground">Case ID: {caseId}</p>
+    <div className="space-y-8">
+      {/* Pipeline Header */}
+      <div className="text-center border-b pb-6">
+        <h2 className="text-3xl font-bold mb-2">AI Agent Orchestration Pipeline</h2>
+        <p className="text-muted-foreground text-lg">Case ID: <span className="font-mono font-bold text-primary">{caseId}</span></p>
+        <p className="text-sm text-muted-foreground mt-2">
+          8 specialized agents processing your request sequentially with real-time updates
+        </p>
       </div>
 
-      {/* Pipeline Overview */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Processing Status</CardTitle>
-          <CardDescription>Real-time agent execution pipeline</CardDescription>
+      {/* Horizontal Pipeline Overview */}
+      <Card className="border-2 border-primary/20">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Live Agent Status Pipeline</CardTitle>
+          <CardDescription>Sequential processing with real-time status updates</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {agents.map((agent, index) => {
-              const StatusIcon = getStatusIcon(agent.status);
-              const AgentIcon = agent.icon;
-              
-              return (
-                <div key={agent.id} className="relative">
-                  {/* Connection Line */}
-                  {index < agents.length - 1 && (
-                    <div className="absolute left-6 top-12 w-0.5 h-8 bg-border" />
-                  )}
-                  
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                      agent.status === "completed" ? "bg-success/10 border-2 border-success" :
-                      agent.status === "processing" ? "bg-primary/10 border-2 border-primary animate-pulse-banking" :
-                      agent.status === "error" ? "bg-destructive/10 border-2 border-destructive" :
-                      "bg-muted border-2 border-border"
-                    }`}>
-                      <AgentIcon className={`w-5 h-5 ${
-                        agent.status === "completed" ? "text-success" :
-                        agent.status === "processing" ? "text-primary" :
-                        agent.status === "error" ? "text-destructive" :
-                        "text-muted-foreground"
-                      }`} />
-                    </div>
-                    
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <div>
-                          <h4 className="font-semibold">{agent.name}</h4>
-                          <p className="text-sm text-muted-foreground">{agent.description}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge variant={getStatusColor(agent.status) as any}>
-                            <StatusIcon className="w-3 h-3 mr-1" />
-                            {agent.status}
-                          </Badge>
-                          {agent.processingTime && agent.status === "completed" && (
-                            <span className="text-xs text-muted-foreground">
-                              {agent.processingTime}s
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      
-                      {agent.status !== "pending" && (
-                        <div className="space-y-2">
-                          <Progress value={agent.progress} className="h-2" />
-                          {agent.output && (
-                            <div className="bg-muted/50 rounded-lg p-3">
-                              <p className="text-sm font-mono">{agent.output}</p>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                    
-                    {index < agents.length - 1 && agent.status === "completed" && (
-                      <ArrowRight className="w-4 h-4 text-success mt-4" />
-                    )}
+          {/* Horizontal Agent Flow */}
+          <div className="flex items-center justify-between mb-8 overflow-x-auto min-w-full">
+            {agents.map((agent, index) => (
+              <div key={agent.id} className="flex items-center">
+                <div className="flex flex-col items-center min-w-24">
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
+                    agent.status === "completed" ? "bg-success border-4 border-success shadow-lg shadow-success/30" :
+                    agent.status === "processing" ? "bg-primary border-4 border-primary shadow-lg shadow-primary/30 animate-pulse-banking" :
+                    agent.status === "error" ? "bg-destructive border-4 border-destructive shadow-lg shadow-destructive/30" :
+                    "bg-muted border-4 border-muted"
+                  }`}>
+                    <agent.icon className={`w-7 h-7 ${
+                      agent.status === "completed" ? "text-white" :
+                      agent.status === "processing" ? "text-white" :
+                      agent.status === "error" ? "text-white" :
+                      "text-muted-foreground"
+                    }`} />
                   </div>
+                  <h4 className="text-xs font-medium text-center leading-tight">{agent.name.replace(' Agent', '')}</h4>
+                  <Badge 
+                    variant={getStatusColor(agent.status) as any}
+                    className="mt-1 text-xs"
+                  >
+                    {agent.status}
+                  </Badge>
+                  {agent.status !== "pending" && (
+                    <div className="w-20 mt-2">
+                      <Progress value={agent.progress} className="h-1" />
+                    </div>
+                  )}
                 </div>
-              );
-            })}
+                
+                {index < agents.length - 1 && (
+                  <ArrowRight className={`w-6 h-6 mx-3 ${
+                    agent.status === "completed" ? "text-success" :
+                    index === 0 || agents[index - 1]?.status === "completed" ? "text-primary" :
+                    "text-muted-foreground"
+                  }`} />
+                )}
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* Detailed Agent Outputs */}
+      <div className="space-y-6">
+        <h3 className="text-2xl font-bold">Agent Processing Details</h3>
+        <div className="grid gap-4">
+          {agents
+            .filter(agent => agent.output)
+            .map((agent, index) => {
+              const AgentIcon = agent.icon;
+              
+              return (
+                <Card key={agent.id} className="border-l-4 border-l-success">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
+                        <AgentIcon className="w-6 h-6 text-success" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="text-lg font-semibold">{agent.name}</h4>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="default" className="bg-success text-success-foreground">
+                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                              Completed
+                            </Badge>
+                            {agent.processingTime && (
+                              <span className="text-sm text-muted-foreground">
+                                {agent.processingTime.toFixed(1)}s
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="bg-muted/30 rounded-lg p-4 border-l-4 border-l-success/50">
+                          <p className="text-sm leading-relaxed">{agent.output}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+        </div>
+      </div>
 
       {/* Real-time Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

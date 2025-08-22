@@ -13,14 +13,23 @@ interface CustomerPortalProps {
   onSubmitSupport: (data: any) => void;
 }
 
+interface UploadedFile {
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+}
+
 export function CustomerPortal({ onSubmitSupport }: CustomerPortalProps) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     queryType: "",
     accountInfo: "",
     description: "",
-    attachments: []
+    attachments: [] as UploadedFile[]
   });
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [referenceId, setReferenceId] = useState("");
 
   const queryTypes = [
     { id: "payments", label: "Payments", icon: DollarSign, description: "Transfer issues, failed payments" },
@@ -35,8 +44,38 @@ export function CustomerPortal({ onSubmitSupport }: CustomerPortalProps) {
   };
 
   const handleSubmit = () => {
-    onSubmitSupport(formData);
-    setStep(5); // Success step
+    const refId = `REF-${Date.now().toString().slice(-6)}`;
+    setReferenceId(refId);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmSubmission = () => {
+    onSubmitSupport({ ...formData, referenceId });
+    setShowConfirmation(false);
+    setStep(5);
+  };
+
+  const handleFileUpload = (files: FileList | null) => {
+    if (!files) return;
+    
+    const newFiles: UploadedFile[] = Array.from(files).map(file => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      url: URL.createObjectURL(file)
+    }));
+    
+    setFormData(prev => ({
+      ...prev,
+      attachments: [...prev.attachments, ...newFiles]
+    }));
+  };
+
+  const removeFile = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      attachments: prev.attachments.filter((_, i) => i !== index)
+    }));
   };
 
   const progress = (step / 5) * 100;
@@ -147,16 +186,51 @@ export function CustomerPortal({ onSubmitSupport }: CustomerPortalProps) {
                 />
               </div>
               <div>
-                <Label>Upload Supporting Documents (Optional)</Label>
+                <Label>Upload Supporting Documents (Required for Direct Processing)</Label>
                 <div className="border-2 border-dashed border-muted rounded-lg p-6 text-center">
                   <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
                   <p className="text-sm text-muted-foreground">
-                    Drag & drop files here or click to browse
+                    Upload PDF, images, or email files. Our AI will extract all details automatically.
                   </p>
-                  <Button variant="outline" size="sm" className="mt-2">
-                    Choose Files
-                  </Button>
+                  <input
+                    type="file"
+                    multiple
+                    accept=".pdf,.png,.jpg,.jpeg,.eml,.txt"
+                    onChange={(e) => handleFileUpload(e.target.files)}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label htmlFor="file-upload">
+                    <Button variant="outline" size="sm" className="mt-2" asChild>
+                      <span>Choose Files</span>
+                    </Button>
+                  </label>
                 </div>
+                
+                {/* Display uploaded files */}
+                {formData.attachments.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    {formData.attachments.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between bg-muted/50 rounded-lg p-3">
+                        <div className="flex items-center gap-3">
+                          <FileText className="w-5 h-5 text-muted-foreground" />
+                          <div>
+                            <p className="text-sm font-medium">{file.name}</p>
+                            <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(1)} KB</p>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeFile(index)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -220,7 +294,7 @@ export function CustomerPortal({ onSubmitSupport }: CustomerPortalProps) {
                 disabled={
                   (step === 1 && !formData.queryType) ||
                   (step === 2 && !formData.accountInfo) ||
-                  (step === 3 && !formData.description)
+                  (step === 3 && !formData.description && formData.attachments.length === 0)
                 }
                 className="ml-auto"
               >
@@ -229,7 +303,11 @@ export function CustomerPortal({ onSubmitSupport }: CustomerPortalProps) {
             )}
             
             {step === 4 && (
-              <Button onClick={handleSubmit} className="ml-auto">
+              <Button 
+                onClick={handleSubmit} 
+                className="ml-auto"
+                disabled={formData.attachments.length === 0 && !formData.description}
+              >
                 Submit Request
               </Button>
             )}
@@ -243,26 +321,40 @@ export function CustomerPortal({ onSubmitSupport }: CustomerPortalProps) {
         </CardContent>
       </Card>
 
-      {/* AI Assistant Panel */}
-      {step < 5 && (
-        <Card className="mt-6 border-primary/20 bg-primary/5">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                <MessageCircle className="w-4 h-4 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-sm">AI Assistant</h4>
-                <p className="text-sm text-muted-foreground">
-                  {step === 1 && "I can help you find the right category for your issue. What specifically are you having trouble with?"}
-                  {step === 2 && "I've verified your account details. Everything looks good to proceed."}
-                  {step === 3 && "Based on your query type, I recommend including any relevant transaction IDs or error messages."}
-                  {step === 4 && "Your request looks complete. Our specialized agents will handle this efficiently."}
+      {/* Confirmation Dialog */}
+      {showConfirmation && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Card className="w-full max-w-md mx-4">
+            <CardHeader>
+              <CardTitle>Confirm Submission</CardTitle>
+              <CardDescription>Your documents have been uploaded successfully</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-success/10 border border-success/20 rounded-lg p-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-success" />
+                  <span className="font-medium">Documents Uploaded</span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Reference ID: <span className="font-mono font-bold">{referenceId}</span>
                 </p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+              
+              <p className="text-sm text-muted-foreground">
+                Now watch the AI agent orchestrator handle your request in real-time.
+              </p>
+              
+              <div className="flex gap-3 pt-4">
+                <Button variant="outline" onClick={() => setShowConfirmation(false)} className="flex-1">
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmSubmission} className="flex-1">
+                  Continue to Processing
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );
