@@ -21,7 +21,8 @@ import {
   Zap,
   Globe,
   FileText,
-  BarChart3
+  BarChart3,
+  Upload
 } from "lucide-react";
 
 interface SupportRequest {
@@ -112,26 +113,25 @@ const Index = () => {
 
   return (
     <div className="min-h-screen banking-hero">
-      {/* Ultra-Modern Hero Section */}
+      {/* Compact Hero Section */}
       <div className="relative overflow-hidden">
-        {/* Background Grid */}
+        {/* Background Elements */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.1)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20"></div>
+        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-primary rounded-full blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-accent rounded-full blur-3xl opacity-15 animate-pulse"></div>
         
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-primary rounded-full blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-accent rounded-full blur-3xl opacity-15 animate-pulse"></div>
-        
-        <div className="relative z-10 container mx-auto px-6 py-20">
-          <div className="text-center mb-16 fade-in">
-            <div className="max-w-5xl mx-auto">
-              <div className="mb-6">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium backdrop-blur-sm">
+        <div className="relative z-10 container mx-auto px-6 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Hero Content */}
+            <div className="text-center lg:text-left fade-in">
+              <div className="mb-4">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium backdrop-blur-sm">
                   <Zap className="w-4 h-4" />
                   Next-Gen AI Banking
                 </span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
                 <span className="bg-gradient-primary bg-clip-text text-transparent">
                   Autonomous
                 </span>
@@ -139,46 +139,82 @@ const Index = () => {
                 <span className="text-foreground">Banking AI</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-                Revolutionary multi-agent orchestration that processes customer requests in 
+              <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
+                Revolutionary multi-agent orchestration processes customer requests in 
                 <span className="text-primary font-semibold"> 4.2 minutes</span> with 
                 <span className="text-secondary font-semibold"> 97.8% accuracy</span>
               </p>
               
-              <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <div className="flex flex-col sm:flex-row gap-4 lg:justify-start justify-center">
                 <Button 
-                  size="xl" 
+                  size="lg" 
                   variant="banking-primary"
                   onClick={() => setActiveView("customer-portal")}
                   className="group"
                 >
-                  <Brain className="w-6 h-6 mr-3 group-hover:animate-spin" />
+                  <Brain className="w-5 h-5 mr-2 group-hover:animate-spin" />
                   Start AI Orchestration
-                  <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
-                  size="xl" 
+                  size="lg" 
                   variant="banking-outline"
                   onClick={() => setActiveView("dashboard")}
                 >
-                  <BarChart3 className="w-6 h-6 mr-3" />
+                  <BarChart3 className="w-5 h-5 mr-2" />
                   View Analytics
                 </Button>
               </div>
-              
+            </div>
+
+            {/* Right Side - Live Stats & Features */}
+            <div className="space-y-6 slide-up">
               {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
-                <div className="text-center slide-up">
-                  <div className="text-3xl font-bold text-primary mb-1">8</div>
-                  <div className="text-sm text-muted-foreground">AI Agents</div>
+              <div className="grid grid-cols-3 gap-4">
+                <Card className="banking-card text-center p-4">
+                  <div className="text-2xl font-bold text-primary mb-1">8</div>
+                  <div className="text-xs text-muted-foreground">AI Agents</div>
+                </Card>
+                <Card className="banking-card text-center p-4">
+                  <div className="text-2xl font-bold text-secondary mb-1">97.8%</div>
+                  <div className="text-xs text-muted-foreground">Success Rate</div>
+                </Card>
+                <Card className="banking-card text-center p-4">
+                  <div className="text-2xl font-bold text-accent mb-1">4.2m</div>
+                  <div className="text-xs text-muted-foreground">Avg Resolution</div>
+                </Card>
+              </div>
+
+              {/* Key Features Compact */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 banking-card">
+                  <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Brain className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm">Multi-Agent Orchestra</h4>
+                    <p className="text-xs text-muted-foreground">8 specialized AI agents in perfect harmony</p>
+                  </div>
                 </div>
-                <div className="text-center slide-up" style={{animationDelay: '0.1s'}}>
-                  <div className="text-3xl font-bold text-secondary mb-1">97.8%</div>
-                  <div className="text-sm text-muted-foreground">Success Rate</div>
+                
+                <div className="flex items-center gap-3 p-3 banking-card">
+                  <div className="w-10 h-10 bg-gradient-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Zap className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm">Lightning Speed</h4>
+                    <p className="text-xs text-muted-foreground">Real-time processing with instant resolution</p>
+                  </div>
                 </div>
-                <div className="text-center slide-up" style={{animationDelay: '0.2s'}}>
-                  <div className="text-3xl font-bold text-accent mb-1">4.2m</div>
-                  <div className="text-sm text-muted-foreground">Avg Resolution</div>
+                
+                <div className="flex items-center gap-3 p-3 banking-card">
+                  <div className="w-10 h-10 bg-gradient-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm">Bank-Grade Security</h4>
+                    <p className="text-xs text-muted-foreground">Built-in compliance for all regulations</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -186,272 +222,250 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Modern Feature Cards */}
-      <div className="container mx-auto px-6 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
-          <Card className="banking-card hover:shadow-banking hover:scale-105 transition-bounce group scale-in">
-            <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Brain className="w-10 h-10 text-white" />
+      {/* Orchestration Output Report Section */}
+      <div className="container mx-auto px-6 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <span className="bg-gradient-secondary bg-clip-text text-transparent">
+              Complete Orchestration Output
+            </span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            See how our AI agents generate comprehensive reports that automatically integrate with your analytics dashboard
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          {/* Sample Output Report */}
+          <Card className="banking-card">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <FileText className="w-5 h-5 text-primary" />
+                AI Orchestration Report
+              </CardTitle>
+              <CardDescription>Case ID: CS-2024-247 | Completed in 3.8 minutes</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg border border-success/20">
+                  <span className="text-sm font-medium">Intent Detection</span>
+                  <Badge variant="secondary">Card Dispute - Unauthorized Transaction</Badge>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg border border-success/20">
+                  <span className="text-sm font-medium">Customer Verification</span>
+                  <Badge variant="secondary">Identity Confirmed via KYC</Badge>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg border border-success/20">
+                  <span className="text-sm font-medium">Transaction Analysis</span>
+                  <Badge variant="secondary">$487.50 Disputed - Valid Claim</Badge>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg border border-success/20">
+                  <span className="text-sm font-medium">Compliance Check</span>
+                  <Badge variant="secondary">Reg E Compliant</Badge>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-primary/10 rounded-lg border border-primary/20">
+                  <span className="text-sm font-medium">Resolution</span>
+                  <Badge variant="default">Refund Processed - Email Sent</Badge>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-4">Multi-Agent Orchestra</h3>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                8 specialized AI agents working in perfect harmony for unparalleled customer service automation
-              </p>
-              <div className="mt-6 pt-6 border-t border-border/50">
-                <div className="flex justify-center items-center gap-2 text-primary font-semibold">
-                  <CheckCircle2 className="w-5 h-5" />
-                  98.5% Intent Accuracy
+              
+              <div className="pt-4 border-t border-border/50">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium">Customer Satisfaction Score</span>
+                  <span className="text-lg font-bold text-success">4.9/5</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="banking-card hover:shadow-accent hover:scale-105 transition-bounce group scale-in" style={{animationDelay: '0.1s'}}>
-            <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-secondary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Zap className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Lightning Speed</h3>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Real-time processing with industry-leading resolution times and satisfaction scores
-              </p>
-              <div className="mt-6 pt-6 border-t border-border/50">
-                <div className="flex justify-center items-center gap-2 text-secondary font-semibold">
-                  <TrendingUp className="w-5 h-5" />
-                  4.2min Average Resolution
+          {/* Dashboard Integration */}
+          <Card className="banking-card">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-secondary" />
+                Real-time Dashboard Integration
+              </CardTitle>
+              <CardDescription>Automatic analytics updates after each case completion</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="p-3 bg-gradient-card rounded-lg border border-border/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Cases Processed Today</span>
+                    <span className="text-success text-sm">+1</span>
+                  </div>
+                  <div className="text-2xl font-bold">248</div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="banking-card hover:shadow-glow hover:scale-105 transition-bounce group scale-in" style={{animationDelay: '0.2s'}}>
-            <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-gradient-accent rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                <Shield className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Bank-Grade Security</h3>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Built-in compliance for Reg E, PSD2, and RBI with complete audit trails
-              </p>
-              <div className="mt-6 pt-6 border-t border-border/50">
-                <div className="flex justify-center items-center gap-2 text-accent font-semibold">
-                  <Shield className="w-5 h-5" />
-                  100% Compliance Coverage
+                
+                <div className="p-3 bg-gradient-card rounded-lg border border-border/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Average Resolution Time</span>
+                    <span className="text-success text-sm">-0.4m</span>
+                  </div>
+                  <div className="text-2xl font-bold">3.8m</div>
+                </div>
+                
+                <div className="p-3 bg-gradient-card rounded-lg border border-border/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Success Rate</span>
+                    <span className="text-success text-sm">+0.1%</span>
+                  </div>
+                  <div className="text-2xl font-bold">97.9%</div>
+                </div>
+                
+                <div className="p-3 bg-gradient-card rounded-lg border border-border/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Customer Satisfaction</span>
+                    <span className="text-success text-sm">+0.1</span>
+                  </div>
+                  <div className="text-2xl font-bold">4.9</div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
+
+        {/* Process Flow Visualization */}
+        <Card className="banking-card">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">End-to-End Process Flow</CardTitle>
+            <CardDescription>From submission to dashboard analytics in real-time</CardDescription>
+          </CardHeader>
+          <CardContent className="p-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex flex-col items-center text-center group">
+                <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                  <Upload className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="font-semibold mb-1">1. Submit Case</h4>
+                <p className="text-sm text-muted-foreground">Upload documents & details</p>
+              </div>
+              
+              <ArrowRight className="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" />
+              
+              <div className="flex flex-col items-center text-center group">
+                <div className="w-16 h-16 bg-gradient-secondary rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                  <Bot className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="font-semibold mb-1">2. AI Processing</h4>
+                <p className="text-sm text-muted-foreground">8 agents orchestration</p>
+              </div>
+              
+              <ArrowRight className="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" />
+              
+              <div className="flex flex-col items-center text-center group">
+                <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                  <FileText className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="font-semibold mb-1">3. Generate Report</h4>
+                <p className="text-sm text-muted-foreground">Comprehensive output</p>
+              </div>
+              
+              <ArrowRight className="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" />
+              
+              <div className="flex flex-col items-center text-center group">
+                <div className="w-16 h-16 bg-banking-accent rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                  <BarChart3 className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="font-semibold mb-1">4. Update Dashboard</h4>
+                <p className="text-sm text-muted-foreground">Real-time analytics</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* System Architecture */}
-      <Tabs defaultValue="workflow" className="mb-16">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="workflow">Workflow</TabsTrigger>
-          <TabsTrigger value="agents">Agents</TabsTrigger>
-          <TabsTrigger value="channels">Channels</TabsTrigger>
-          <TabsTrigger value="features">Features</TabsTrigger>
-        </TabsList>
+      {/* Streamlined System Overview */}
+      <div className="container mx-auto px-6 py-12">
+        <Tabs defaultValue="workflow" className="mb-12">
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+            <TabsTrigger value="workflow">Workflow</TabsTrigger>
+            <TabsTrigger value="agents">AI Agents</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="workflow" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>End-to-End Workflow</CardTitle>
-              <CardDescription>Complete customer service automation pipeline</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Globe className="w-6 h-6 text-primary" />
-                  </div>
-                  <h4 className="font-semibold mb-2">1. Data Ingestion</h4>
-                  <p className="text-sm text-muted-foreground">Multi-channel intake from web, mobile, call, and email</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-banking-secondary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Bot className="w-6 h-6 text-banking-secondary" />
-                  </div>
-                  <h4 className="font-semibold mb-2">2. Agent Orchestration</h4>
-                  <p className="text-sm text-muted-foreground">8 specialized agents process in sequence</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Shield className="w-6 h-6 text-warning" />
-                  </div>
-                  <h4 className="font-semibold mb-2">3. Compliance Check</h4>
-                  <p className="text-sm text-muted-foreground">Regulatory validation and risk assessment</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <CheckCircle2 className="w-6 h-6 text-success" />
-                  </div>
-                  <h4 className="font-semibold mb-2">4. Resolution</h4>
-                  <p className="text-sm text-muted-foreground">Automated case resolution and communication</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+          <TabsContent value="workflow" className="mt-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="banking-card text-center p-4">
+                <Globe className="w-8 h-8 text-primary mx-auto mb-3" />
+                <h4 className="font-semibold text-sm mb-2">Multi-Channel Intake</h4>
+                <p className="text-xs text-muted-foreground">Web, mobile, call, email</p>
+              </Card>
+              <Card className="banking-card text-center p-4">
+                <Bot className="w-8 h-8 text-secondary mx-auto mb-3" />
+                <h4 className="font-semibold text-sm mb-2">AI Orchestration</h4>
+                <p className="text-xs text-muted-foreground">8 agents in sequence</p>
+              </Card>
+              <Card className="banking-card text-center p-4">
+                <Shield className="w-8 h-8 text-warning mx-auto mb-3" />
+                <h4 className="font-semibold text-sm mb-2">Compliance Check</h4>
+                <p className="text-xs text-muted-foreground">Regulatory validation</p>
+              </Card>
+              <Card className="banking-card text-center p-4">
+                <CheckCircle2 className="w-8 h-8 text-success mx-auto mb-3" />
+                <h4 className="font-semibold text-sm mb-2">Resolution</h4>
+                <p className="text-xs text-muted-foreground">Automated completion</p>
+              </Card>
+            </div>
+          </TabsContent>
 
-        <TabsContent value="agents" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { name: "Channel Intake Agent", desc: "Captures and structures multi-channel inputs", icon: Database },
-              { name: "Intent Detection Agent", desc: "AI-powered query classification with 98.5% accuracy", icon: Brain },
-              { name: "Authentication Agent", desc: "Multi-factor identity verification and KYC", icon: Shield },
-              { name: "Entitlement Agent", desc: "Validates customer permissions and access rights", icon: Users },
-              { name: "Knowledge Retrieval Agent", desc: "Fetches relevant policies and procedures", icon: FileText },
-              { name: "Resolution Agent", desc: "Executes transactions and creates dispute cases", icon: CheckCircle2 },
-              { name: "Compliance Agent", desc: "Ensures regulatory adherence", icon: Shield },
-              { name: "Communication Agent", desc: "Drafts customer-facing responses", icon: MessageSquare }
-            ].map((agent, index) => (
-              <Card key={index}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
+          <TabsContent value="agents" className="mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { name: "Intent Detection", accuracy: "98.5%", icon: Brain },
+                { name: "Authentication", coverage: "100%", icon: Shield },
+                { name: "Knowledge Retrieval", speed: "0.3s", icon: FileText },
+                { name: "Resolution Engine", success: "96.2%", icon: CheckCircle2 }
+              ].map((agent, index) => (
+                <Card key={index} className="banking-card p-4">
+                  <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                       <agent.icon className="w-5 h-5 text-primary" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold">{agent.name}</h4>
-                      <p className="text-sm text-muted-foreground">{agent.desc}</p>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-sm">{agent.name}</h4>
+                      <p className="text-xs text-muted-foreground">
+                        {agent.accuracy || agent.coverage || agent.speed || agent.success}
+                      </p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
-        <TabsContent value="channels" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { channel: "Web Portal", desc: "Structured support forms with real-time assistance", percentage: "45%" },
-              { channel: "Mobile App", desc: "In-app chat and form submissions", percentage: "32%" },
-              { channel: "Call Center", desc: "Speech-to-text transcription processing", percentage: "18%" },
-              { channel: "Email", desc: "Unstructured email parsing and extraction", percentage: "5%" }
-            ].map((channel, index) => (
-              <Card key={index}>
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-primary mb-2">{channel.percentage}</div>
-                  <h4 className="font-semibold mb-2">{channel.channel}</h4>
-                  <p className="text-sm text-muted-foreground">{channel.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="features" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Real-time Analytics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    Live agent performance monitoring
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    SLA tracking and alerting
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    Customer satisfaction metrics
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    Channel performance analysis
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Compliance & Security</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    Regulation E dispute compliance
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    PSD2 authentication standards
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    RBI guidelines adherence
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success" />
-                    Audit trail and documentation
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      {/* Ultra-Modern CTA Section */}
-      <div className="container mx-auto px-6 py-20">
+      {/* Compact CTA Section */}
+      <div className="container mx-auto px-6 py-12">
         <Card className="banking-card relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-primary opacity-10"></div>
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-accent rounded-full blur-3xl opacity-20 -translate-y-32 translate-x-32"></div>
-          
-          <CardContent className="relative p-12 text-center">
-            <div className="max-w-4xl mx-auto">
-              <h3 className="text-4xl md:text-5xl font-bold mb-6 fade-in">
-                Transform Banking with AI
-              </h3>
-              <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed slide-up">
-                Join the future of customer service. Deploy autonomous AI agents that work 24/7, 
-                resolve issues in minutes, and exceed customer expectations.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row justify-center gap-6 scale-in">
-                <Button 
-                  size="xl" 
-                  variant="banking-primary"
-                  onClick={() => setActiveView("customer-portal")}
-                  className="group"
-                >
-                  <Users className="w-6 h-6 mr-3" />
-                  Experience AI Orchestration
-                  <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button 
-                  size="xl" 
-                  variant="banking-outline"
-                  onClick={() => setActiveView("dashboard")}
-                >
-                  <BarChart3 className="w-6 h-6 mr-3" />
-                  View Performance Analytics
-                </Button>
-              </div>
-              
-              {/* Trust Indicators */}
-              <div className="flex flex-wrap justify-center gap-8 mt-12 pt-8 border-t border-border/50">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <CheckCircle2 className="w-5 h-5 text-success" />
-                  <span>Enterprise Grade</span>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <CheckCircle2 className="w-5 h-5 text-success" />
-                  <span>Real-time Processing</span>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <CheckCircle2 className="w-5 h-5 text-success" />
-                  <span>24/7 Availability</span>
-                </div>
-              </div>
+          <div className="absolute inset-0 bg-gradient-primary opacity-5"></div>
+          <CardContent className="relative p-8 text-center">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">
+              Ready to Transform Banking with AI?
+            </h3>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Deploy autonomous AI agents that work 24/7, resolve issues in minutes, and exceed customer expectations.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button 
+                size="lg" 
+                variant="banking-primary"
+                onClick={() => setActiveView("customer-portal")}
+                className="group"
+              >
+                <Users className="w-5 h-5 mr-2" />
+                Experience AI Orchestration
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="banking-outline"
+                onClick={() => setActiveView("dashboard")}
+              >
+                <BarChart3 className="w-5 h-5 mr-2" />
+                View Analytics Dashboard
+              </Button>
             </div>
           </CardContent>
         </Card>
