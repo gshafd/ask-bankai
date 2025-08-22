@@ -11,33 +11,42 @@ interface BankingLayoutProps {
 export function BankingLayout({ children, title = "BankAssist AI Dashboard" }: BankingLayoutProps) {
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-gradient-primary border-b shadow-banking">
-        <div className="container mx-auto px-6 py-4">
+      {/* Ultra-Modern Header */}
+      <header className="relative bg-gradient-hero border-b border-border/50 backdrop-blur-xl">
+        <div className="absolute inset-0 bg-gradient-primary opacity-5"></div>
+        <div className="relative container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <Building2 className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center shadow-glow">
+                <Building2 className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">BankAssist AI</h1>
-                <p className="text-white/80 text-sm">Autonomous Customer Service</p>
+                <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                  BankAssist AI
+                </h1>
+                <p className="text-muted-foreground text-sm font-medium">
+                  Autonomous Customer Service
+                </p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              {/* Enhanced Search */}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <input
                   type="text"
                   placeholder="Search cases, customers..."
-                  className="pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 w-64 focus:outline-none focus:ring-2 focus:ring-white/30"
+                  className="pl-10 pr-4 py-3 bg-banking-surface/50 border border-border/50 rounded-lg text-foreground placeholder-muted-foreground w-72 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:bg-banking-surface transition-smooth backdrop-blur-sm"
                 />
               </div>
               
-              <Button variant="banking-ghost" size="sm">
+              {/* Modern Action Buttons */}
+              <Button variant="banking-ghost" size="sm" className="relative">
                 <Bell className="w-4 h-4" />
-                <Badge variant="destructive" className="ml-1 px-1 text-xs">3</Badge>
+                <Badge variant="destructive" className="absolute -top-1 -right-1 px-1.5 text-xs h-5 min-w-5 flex items-center justify-center">
+                  3
+                </Badge>
               </Button>
               
               <Button variant="banking-ghost" size="sm">
@@ -52,13 +61,19 @@ export function BankingLayout({ children, title = "BankAssist AI Dashboard" }: B
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Modern Main Content */}
       <main className="container mx-auto px-6 py-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-foreground">{title}</h2>
-          <p className="text-muted-foreground">Real-time customer service orchestration and workflow management</p>
+        {title && (
+          <div className="mb-8 fade-in">
+            <h2 className="text-3xl font-bold text-foreground mb-2">{title}</h2>
+            <p className="text-lg text-muted-foreground">
+              Real-time customer service orchestration and workflow management
+            </p>
+          </div>
+        )}
+        <div className="slide-up">
+          {children}
         </div>
-        {children}
       </main>
     </div>
   );

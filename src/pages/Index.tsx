@@ -6,6 +6,7 @@ import { BankingLayout } from "@/components/BankingLayout";
 import { CustomerPortal } from "@/components/CustomerPortal";
 import { AgentOrchestrator } from "@/components/AgentOrchestrator";
 import { Dashboard } from "@/components/Dashboard";
+import { QuickStart } from "@/components/QuickStart";
 import { Badge } from "@/components/ui/badge";
 import { 
   Brain, 
@@ -19,7 +20,8 @@ import {
   CheckCircle2,
   Zap,
   Globe,
-  FileText
+  FileText,
+  BarChart3
 } from "lucide-react";
 
 interface SupportRequest {
@@ -53,14 +55,27 @@ const Index = () => {
 
   if (activeView === "customer-portal") {
     return (
-      <div className="min-h-screen bg-background py-12">
-        <div className="container mx-auto px-6">
-          <div className="mb-6">
-            <Button variant="outline" onClick={() => setActiveView("overview")}>
+      <div className="min-h-screen banking-hero">
+        <div className="container mx-auto px-6 py-12">
+          <div className="mb-8 fade-in">
+            <Button variant="banking-outline" onClick={() => setActiveView("overview")}>
               ← Back to Overview
             </Button>
           </div>
-          <CustomerPortal onSubmitSupport={handleSubmitSupport} />
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12 slide-up">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  Quick Start
+                </span>{" "}
+                AI Orchestration
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Upload your documents or describe your issue. Our AI agents will handle everything else.
+              </p>
+            </div>
+            <QuickStart onSubmit={handleSubmitSupport} />
+          </div>
         </div>
       </div>
     );
@@ -96,74 +111,138 @@ const Index = () => {
   }
 
   return (
-    <BankingLayout title="Autonomous Banking Customer Service Orchestrator">
-      {/* Hero Section */}
-      <div className="text-center mb-12">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">
-            Autonomous Banking Customer Service
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            AI-powered multi-agent orchestration for complete customer service automation. 
-            From data ingestion to resolution, our GenAI agents handle it all.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button 
-              size="lg" 
-              variant="banking-primary"
-              onClick={() => setActiveView("customer-portal")}
-            >
-              Try Customer Portal
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="banking-outline"
-              onClick={() => setActiveView("dashboard")}
-            >
-              View Dashboard
-            </Button>
+    <div className="min-h-screen banking-hero">
+      {/* Ultra-Modern Hero Section */}
+      <div className="relative overflow-hidden">
+        {/* Background Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.1)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20"></div>
+        
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-primary rounded-full blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-accent rounded-full blur-3xl opacity-15 animate-pulse"></div>
+        
+        <div className="relative z-10 container mx-auto px-6 py-20">
+          <div className="text-center mb-16 fade-in">
+            <div className="max-w-5xl mx-auto">
+              <div className="mb-6">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium backdrop-blur-sm">
+                  <Zap className="w-4 h-4" />
+                  Next-Gen AI Banking
+                </span>
+              </div>
+              
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 leading-tight">
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  Autonomous
+                </span>
+                <br />
+                <span className="text-foreground">Banking AI</span>
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+                Revolutionary multi-agent orchestration that processes customer requests in 
+                <span className="text-primary font-semibold"> 4.2 minutes</span> with 
+                <span className="text-secondary font-semibold"> 97.8% accuracy</span>
+              </p>
+              
+              <div className="flex flex-col sm:flex-row justify-center gap-6">
+                <Button 
+                  size="xl" 
+                  variant="banking-primary"
+                  onClick={() => setActiveView("customer-portal")}
+                  className="group"
+                >
+                  <Brain className="w-6 h-6 mr-3 group-hover:animate-spin" />
+                  Start AI Orchestration
+                  <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button 
+                  size="xl" 
+                  variant="banking-outline"
+                  onClick={() => setActiveView("dashboard")}
+                >
+                  <BarChart3 className="w-6 h-6 mr-3" />
+                  View Analytics
+                </Button>
+              </div>
+              
+              {/* Quick Stats */}
+              <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+                <div className="text-center slide-up">
+                  <div className="text-3xl font-bold text-primary mb-1">8</div>
+                  <div className="text-sm text-muted-foreground">AI Agents</div>
+                </div>
+                <div className="text-center slide-up" style={{animationDelay: '0.1s'}}>
+                  <div className="text-3xl font-bold text-secondary mb-1">97.8%</div>
+                  <div className="text-sm text-muted-foreground">Success Rate</div>
+                </div>
+                <div className="text-center slide-up" style={{animationDelay: '0.2s'}}>
+                  <div className="text-3xl font-bold text-accent mb-1">4.2m</div>
+                  <div className="text-sm text-muted-foreground">Avg Resolution</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Key Features */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-        <Card className="border-2 border-primary/20 hover:border-primary/40 transition-smooth">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
-              <Brain className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-bold mb-2">Multi-Agent AI</h3>
-            <p className="text-muted-foreground">
-              8 specialized AI agents working in orchestrated sequence for optimal customer service
-            </p>
-          </CardContent>
-        </Card>
+      {/* Modern Feature Cards */}
+      <div className="container mx-auto px-6 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
+          <Card className="banking-card hover:shadow-banking hover:scale-105 transition-bounce group scale-in">
+            <CardContent className="p-8 text-center">
+              <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Brain className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Multi-Agent Orchestra</h3>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                8 specialized AI agents working in perfect harmony for unparalleled customer service automation
+              </p>
+              <div className="mt-6 pt-6 border-t border-border/50">
+                <div className="flex justify-center items-center gap-2 text-primary font-semibold">
+                  <CheckCircle2 className="w-5 h-5" />
+                  98.5% Intent Accuracy
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Card className="border-2 border-banking-secondary/20 hover:border-banking-secondary/40 transition-smooth">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 bg-gradient-success rounded-full flex items-center justify-center mx-auto mb-4">
-              <Zap className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-bold mb-2">Real-time Processing</h3>
-            <p className="text-muted-foreground">
-              Average resolution time of 4.2 minutes with 97.8% success rate
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="banking-card hover:shadow-accent hover:scale-105 transition-bounce group scale-in" style={{animationDelay: '0.1s'}}>
+            <CardContent className="p-8 text-center">
+              <div className="w-20 h-20 bg-gradient-secondary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Zap className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Lightning Speed</h3>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                Real-time processing with industry-leading resolution times and satisfaction scores
+              </p>
+              <div className="mt-6 pt-6 border-t border-border/50">
+                <div className="flex justify-center items-center gap-2 text-secondary font-semibold">
+                  <TrendingUp className="w-5 h-5" />
+                  4.2min Average Resolution
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Card className="border-2 border-banking-accent/20 hover:border-banking-accent/40 transition-smooth">
-          <CardContent className="p-6 text-center">
-            <div className="w-16 h-16 bg-banking-accent rounded-full flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-bold mb-2">Compliance First</h3>
-            <p className="text-muted-foreground">
-              Built-in regulatory compliance for Reg E, PSD2, and RBI requirements
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="banking-card hover:shadow-glow hover:scale-105 transition-bounce group scale-in" style={{animationDelay: '0.2s'}}>
+            <CardContent className="p-8 text-center">
+              <div className="w-20 h-20 bg-gradient-accent rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Shield className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Bank-Grade Security</h3>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                Built-in compliance for Reg E, PSD2, and RBI with complete audit trails
+              </p>
+              <div className="mt-6 pt-6 border-t border-border/50">
+                <div className="flex justify-center items-center gap-2 text-accent font-semibold">
+                  <Shield className="w-5 h-5" />
+                  100% Compliance Coverage
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* System Architecture */}
@@ -321,33 +400,63 @@ const Index = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Call to Action */}
-      <Card className="bg-gradient-primary text-white">
-        <CardContent className="p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">Ready to Transform Your Customer Service?</h3>
-          <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-            Experience the future of banking customer service with our autonomous AI orchestrator. 
-            Reduce response times, increase satisfaction, and ensure compliance.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button 
-              size="lg" 
-              variant="secondary"
-              onClick={() => setActiveView("customer-portal")}
-            >
-              Try Customer Portal
-            </Button>
-            <Button 
-              size="lg" 
-              variant="banking-ghost"
-              onClick={() => setActiveView("dashboard")}
-            >
-              View Dashboard
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </BankingLayout>
+      {/* Ultra-Modern CTA Section */}
+      <div className="container mx-auto px-6 py-20">
+        <Card className="banking-card relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-primary opacity-10"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-accent rounded-full blur-3xl opacity-20 -translate-y-32 translate-x-32"></div>
+          
+          <CardContent className="relative p-12 text-center">
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-4xl md:text-5xl font-bold mb-6 fade-in">
+                Transform Banking with AI
+              </h3>
+              <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed slide-up">
+                Join the future of customer service. Deploy autonomous AI agents that work 24/7, 
+                resolve issues in minutes, and exceed customer expectations.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row justify-center gap-6 scale-in">
+                <Button 
+                  size="xl" 
+                  variant="banking-primary"
+                  onClick={() => setActiveView("customer-portal")}
+                  className="group"
+                >
+                  <Users className="w-6 h-6 mr-3" />
+                  Experience AI Orchestration
+                  <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button 
+                  size="xl" 
+                  variant="banking-outline"
+                  onClick={() => setActiveView("dashboard")}
+                >
+                  <BarChart3 className="w-6 h-6 mr-3" />
+                  View Performance Analytics
+                </Button>
+              </div>
+              
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap justify-center gap-8 mt-12 pt-8 border-t border-border/50">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-success" />
+                  <span>Enterprise Grade</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-success" />
+                  <span>Real-time Processing</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-success" />
+                  <span>24/7 Availability</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 };
 
