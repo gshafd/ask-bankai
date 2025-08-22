@@ -97,62 +97,32 @@ const Index = () => {
 
   return (
     <BankingLayout title="Autonomous Banking Customer Service Orchestrator">
-      {/* Modern Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-banking-secondary/5 to-banking-accent/5 rounded-3xl"></div>
-        <div className="relative text-center py-20 px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Brain className="w-4 h-4" />
-              Next-Generation AI Banking
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              <span className="text-foreground">Autonomous Banking</span>
-              <br />
-              <span className="bg-gradient-primary bg-clip-text text-transparent">Customer Service</span>
-            </h1>
-            
-            <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              Transform customer service with AI-powered multi-agent orchestration. 
-              Experience seamless automation from intake to resolution.
-            </p>
-            
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button 
-                size="lg" 
-                variant="banking-primary"
-                onClick={() => setActiveView("customer-portal")}
-                className="h-14 px-8 text-lg"
-              >
-                Start Support Request
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="banking-outline"
-                onClick={() => setActiveView("dashboard")}
-                className="h-14 px-8 text-lg"
-              >
-                View Live Dashboard
-              </Button>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-1">4.2min</div>
-                <div className="text-sm text-muted-foreground">Avg Resolution</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-success mb-1">97.8%</div>
-                <div className="text-sm text-muted-foreground">Success Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-banking-secondary mb-1">24/7</div>
-                <div className="text-sm text-muted-foreground">AI Availability</div>
-              </div>
-            </div>
+      {/* Hero Section */}
+      <div className="text-center mb-12">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">
+            Autonomous Banking Customer Service
+          </h1>
+          <p className="text-xl text-muted-foreground mb-8">
+            AI-powered multi-agent orchestration for complete customer service automation. 
+            From data ingestion to resolution, our GenAI agents handle it all.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button 
+              size="lg" 
+              variant="banking-primary"
+              onClick={() => setActiveView("customer-portal")}
+            >
+              Try Customer Portal
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="banking-outline"
+              onClick={() => setActiveView("dashboard")}
+            >
+              View Dashboard
+            </Button>
           </div>
         </div>
       </div>

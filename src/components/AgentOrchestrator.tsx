@@ -94,17 +94,6 @@ export function AgentOrchestrator({ caseId, onComplete }: AgentOrchestratorProps
   ]);
 
   useEffect(() => {
-    // Start first agent immediately
-    setAgents(prev => {
-      const updated = [...prev];
-      if (updated[0]?.status === "pending") {
-        updated[0].status = "processing";
-        updated[0].progress = 15;
-        return updated;
-      }
-      return prev;
-    });
-
     const interval = setInterval(() => {
       setAgents(prev => {
         const updated = [...prev];
@@ -115,52 +104,54 @@ export function AgentOrchestrator({ caseId, onComplete }: AgentOrchestratorProps
           const agent = updated[i];
           
           if (agent.status === "processing" && agent.progress < 100) {
-            agent.progress = Math.min(100, agent.progress + Math.random() * 12 + 3);
+            agent.progress = Math.min(100, agent.progress + Math.random() * 15);
             changed = true;
             
             if (agent.progress >= 100) {
               agent.status = "completed";
               agent.output = getAgentOutput(agent.id);
-              agent.processingTime = Math.random() * 3 + 1.5; // Random processing time
               
               // Start next agent
               if (i + 1 < updated.length && updated[i + 1].status === "pending") {
                 updated[i + 1].status = "processing";
-                updated[i + 1].progress = 15;
+                updated[i + 1].progress = 10;
               }
             }
             break; // Only process one agent at a time
+          }
+          
+          if (agent.status === "pending" && i === 0) {
+            agent.status = "processing";
+            agent.progress = 10;
+            changed = true;
+            break;
           }
         }
 
         // Check if all completed
         if (updated.every(a => a.status === "completed")) {
-          setTimeout(() => {
-            onComplete({
-              caseId,
-              resolution: "Case resolved successfully with full compliance validation",
-              customerMessage: `Your request has been processed. Case ${caseId} is now complete.`
-            });
-          }, 1000);
+          onComplete({
+            caseId,
+            resolution: "Dispute case created successfully",
+            customerMessage: "Your card dispute has been filed. Case #CD-2024-001"
+          });
         }
 
         return changed ? updated : prev;
       });
-    }, 600);
+    }, 800);
 
     return () => clearInterval(interval);
   }, [caseId, onComplete]);
 
   const getAgentOutput = (agentId: string): string => {
     const outputs: Record<string, string> = {
-      intake: "✅ Structured interaction packet created from web portal submission | Channel: Web | Format: JSON",
-      intent: "🎯 Intent: Card Dispute | Confidence: 96.8% | Product: Credit Card | Urgency: High | Reasoning: Keywords 'unauthorized charge', 'dispute' detected with transaction reference",
-      auth: "🔐 Identity verification: PASSED | Customer ID: CUST-12345 verified ✓ | KYC Status: Active | Multi-factor auth completed | Risk Score: Low (2.1/10)",
-      entitlement: "✅ Entitlement Check PASSED | Dispute privileges: Active ✓ | Channel permissions: Web/Mobile/Phone ✓ | Credit card dispute rights: Confirmed | Account standing: Good",
-      knowledge: "📚 Knowledge Retrieved: Reg E dispute procedures (15-day window) | Chargeback process guidelines | Required documentation: Transaction details, merchant info | Reference: KB-2024-CC-001",
-      resolution: "💳 Dispute Case #CD-2024-0847 CREATED ✓ | Transaction $459.99 flagged for investigation | Provisional credit of $459.99 APPROVED | Expected resolution: 7-10 business days",
-      compliance: "⚖️ Regulation E Compliance: VALIDATED ✓ | Dispute filed within 60-day window ✓ | Customer notification timeline: Met ✓ | Audit trail: Generated | Risk assessment: Compliant",
-      communication: "📧 Customer communication drafted: 'Your dispute case #CD-2024-0847 has been filed. Provisional credit of $459.99 applied to your account. Investigation timeline: 7-10 business days. Reference ID: REF-884721'"
+      auth: "Identity verified ✓ | KYC status: Active | Risk score: Low",
+      entitlement: "Dispute privileges: Active ✓ | Channel permissions: Web/Mobile ✓",
+      knowledge: "Retrieved: Reg E dispute procedures | Timeline: 10 business days | Required docs: Transaction details",
+      resolution: "Dispute case CD-2024-001 created | Transaction flagged | Provisional credit approved",
+      compliance: "Reg E compliant ✓ | Dispute timeline met ✓ | Customer notification required ✓",
+      communication: "Draft message prepared for customer review and approval"
     };
     return outputs[agentId] || "Processing complete";
   };
@@ -185,135 +176,130 @@ export function AgentOrchestrator({ caseId, onComplete }: AgentOrchestratorProps
 
   return (
     <div className="space-y-6">
-      {/* Compact Pipeline Header */}
-      <div className="text-center border-b pb-4">
-        <h2 className="text-2xl font-bold mb-1">AI Agent Pipeline</h2>
-        <p className="text-muted-foreground">Case ID: <span className="font-mono font-bold text-primary">{caseId}</span></p>
+      <div className="text-center">
+        <h3 className="text-xl font-bold">Agent Orchestration Pipeline</h3>
+        <p className="text-muted-foreground">Case ID: {caseId}</p>
       </div>
 
-      {/* Compact Horizontal Pipeline */}
-      <Card className="border-2 border-primary/20">
-        <CardContent className="p-4">
-          <div className="grid grid-cols-8 gap-2 mb-4">
-            {agents.map((agent) => (
-              <div key={agent.id} className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 transition-all duration-300 ${
-                  agent.status === "completed" ? "bg-success border-2 border-success shadow-md" :
-                  agent.status === "processing" ? "bg-primary border-2 border-primary shadow-md animate-pulse" :
-                  agent.status === "error" ? "bg-destructive border-2 border-destructive shadow-md" :
-                  "bg-muted border-2 border-muted"
-                }`}>
-                  <agent.icon className={`w-5 h-5 ${
-                    agent.status === "completed" ? "text-white" :
-                    agent.status === "processing" ? "text-white" :
-                    agent.status === "error" ? "text-white" :
-                    "text-muted-foreground"
-                  }`} />
-                </div>
-                <h4 className="text-xs font-medium text-center leading-tight mb-1">{agent.name.replace(' Agent', '')}</h4>
-                <Badge variant={getStatusColor(agent.status) as any} className="text-xs px-1 py-0">
-                  {agent.status}
-                </Badge>
-                {agent.status !== "pending" && (
-                  <div className="w-16 mt-1">
-                    <Progress value={agent.progress} className="h-1" />
+      {/* Pipeline Overview */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Processing Status</CardTitle>
+          <CardDescription>Real-time agent execution pipeline</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {agents.map((agent, index) => {
+              const StatusIcon = getStatusIcon(agent.status);
+              const AgentIcon = agent.icon;
+              
+              return (
+                <div key={agent.id} className="relative">
+                  {/* Connection Line */}
+                  {index < agents.length - 1 && (
+                    <div className="absolute left-6 top-12 w-0.5 h-8 bg-border" />
+                  )}
+                  
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                      agent.status === "completed" ? "bg-success/10 border-2 border-success" :
+                      agent.status === "processing" ? "bg-primary/10 border-2 border-primary animate-pulse-banking" :
+                      agent.status === "error" ? "bg-destructive/10 border-2 border-destructive" :
+                      "bg-muted border-2 border-border"
+                    }`}>
+                      <AgentIcon className={`w-5 h-5 ${
+                        agent.status === "completed" ? "text-success" :
+                        agent.status === "processing" ? "text-primary" :
+                        agent.status === "error" ? "text-destructive" :
+                        "text-muted-foreground"
+                      }`} />
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <div>
+                          <h4 className="font-semibold">{agent.name}</h4>
+                          <p className="text-sm text-muted-foreground">{agent.description}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={getStatusColor(agent.status) as any}>
+                            <StatusIcon className="w-3 h-3 mr-1" />
+                            {agent.status}
+                          </Badge>
+                          {agent.processingTime && agent.status === "completed" && (
+                            <span className="text-xs text-muted-foreground">
+                              {agent.processingTime}s
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {agent.status !== "pending" && (
+                        <div className="space-y-2">
+                          <Progress value={agent.progress} className="h-2" />
+                          {agent.output && (
+                            <div className="bg-muted/50 rounded-lg p-3">
+                              <p className="text-sm font-mono">{agent.output}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {index < agents.length - 1 && agent.status === "completed" && (
+                      <ArrowRight className="w-4 h-4 text-success mt-4" />
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-          
-          {/* Overall Progress */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Overall Progress</span>
-              <span>{Math.round((agents.filter(a => a.status === "completed").length / agents.length) * 100)}%</span>
-            </div>
-            <Progress value={(agents.filter(a => a.status === "completed").length / agents.length) * 100} className="h-2" />
+                </div>
+              );
+            })}
           </div>
         </CardContent>
       </Card>
 
-      {/* Agent Outputs - Compact Cards */}
-      {agents.filter(agent => agent.output).length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-xl font-bold">Agent Analysis Results</h3>
-          <div className="space-y-3">
-            {agents
-              .filter(agent => agent.output)
-              .map((agent) => {
-                const AgentIcon = agent.icon;
-                
-                return (
-                  <Card key={agent.id} className="border-l-4 border-l-success">
-                    <CardContent className="p-3">
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <AgentIcon className="w-4 h-4 text-success" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-semibold">{agent.name}</h4>
-                            <div className="flex items-center gap-2">
-                              <Badge variant="default" className="bg-success text-success-foreground text-xs">
-                                <CheckCircle2 className="w-3 h-3 mr-1" />
-                                Done
-                              </Badge>
-                              {agent.processingTime && (
-                                <span className="text-xs text-muted-foreground">
-                                  {agent.processingTime.toFixed(1)}s
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <div className="bg-muted/30 rounded-md p-3 border-l-2 border-l-success/50">
-                            <p className="text-sm leading-relaxed">{agent.output}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-          </div>
-        </div>
-      )}
-
-      {/* Compact Metrics */}
-      <div className="grid grid-cols-4 gap-3">
+      {/* Real-time Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-3 text-center">
-            <div className="text-xl font-bold text-success">
-              {agents.filter(a => a.status === "completed").length}
+          <CardContent className="p-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-success">
+                {agents.filter(a => a.status === "completed").length}
+              </div>
+              <p className="text-sm text-muted-foreground">Completed</p>
             </div>
-            <p className="text-xs text-muted-foreground">Completed</p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-3 text-center">
-            <div className="text-xl font-bold text-primary">
-              {agents.filter(a => a.status === "processing").length}
+          <CardContent className="p-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary">
+                {agents.filter(a => a.status === "processing").length}
+              </div>
+              <p className="text-sm text-muted-foreground">Processing</p>
             </div>
-            <p className="text-xs text-muted-foreground">Processing</p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-3 text-center">
-            <div className="text-xl font-bold text-muted-foreground">
-              {agents.filter(a => a.status === "pending").length}
+          <CardContent className="p-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-muted-foreground">
+                {agents.filter(a => a.status === "pending").length}
+              </div>
+              <p className="text-sm text-muted-foreground">Pending</p>
             </div>
-            <p className="text-xs text-muted-foreground">Pending</p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-3 text-center">
-            <div className="text-xl font-bold">
-              {Math.round((agents.filter(a => a.status === "completed").length / agents.length) * 100)}%
+          <CardContent className="p-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold">
+                {Math.round((agents.filter(a => a.status === "completed").length / agents.length) * 100)}%
+              </div>
+              <p className="text-sm text-muted-foreground">Complete</p>
             </div>
-            <p className="text-xs text-muted-foreground">Complete</p>
           </CardContent>
         </Card>
       </div>

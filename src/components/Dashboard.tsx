@@ -174,8 +174,9 @@ export function Dashboard() {
 
       {/* Main Dashboard */}
       <Tabs defaultValue="cases" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="cases">Active Cases</TabsTrigger>
+          <TabsTrigger value="pipeline">Agent Pipeline</TabsTrigger>
           <TabsTrigger value="customer360">Customer 360</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -284,11 +285,7 @@ export function Dashboard() {
                           </span>
                         </TableCell>
                         <TableCell>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => window.alert(`Viewing case details for ${case_.caseId}\n\nCustomer: ${case_.customerName}\nIntent: ${case_.intent}\nStatus: ${case_.status}\nPriority: ${case_.priority}`)}
-                          >
+                          <Button variant="ghost" size="sm">
                             <Eye className="w-4 h-4" />
                           </Button>
                         </TableCell>
@@ -301,6 +298,21 @@ export function Dashboard() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="pipeline" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Agent Pipeline Status</CardTitle>
+              <CardDescription>Real-time view of agent orchestration workflows</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-medium">Pipeline Visualization</p>
+                <p className="text-muted-foreground">Select a case to view its agent orchestration flow</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="customer360" className="space-y-6">
           <Card>
