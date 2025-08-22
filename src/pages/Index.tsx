@@ -553,100 +553,100 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="banking-card p-6 hover:shadow-banking transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Brain className="w-6 h-6 text-primary" />
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Brain className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Intent Detection Engine</h4>
                     <p className="text-sm text-muted-foreground mb-3">
                       Advanced NLP that understands customer intent from unstructured text, voice, and documents
                     </p>
-                    <div className="text-xs text-primary font-medium">
+                    <div className="text-xs text-blue-600 font-medium">
                       Recognizes 200+ intent types
                     </div>
                   </div>
                 </div>
               </Card>
 
-              <Card className="banking-card p-6 hover:shadow-accent transition-all">
+              <Card className="banking-card p-6 hover:shadow-green transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-6 h-6 text-secondary" />
+                  <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Identity Verification</h4>
                     <p className="text-sm text-muted-foreground mb-3">
                       Multi-factor authentication combining biometrics, device fingerprinting, and behavioral analysis
                     </p>
-                    <div className="text-xs text-secondary font-medium">
+                    <div className="text-xs text-green-600 font-medium">
                       Sub-second verification
                     </div>
                   </div>
                 </div>
               </Card>
 
-              <Card className="banking-card p-6 hover:shadow-glow transition-all">
+              <Card className="banking-card p-6 hover:shadow-red transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Database className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Database className="w-6 h-6 text-red-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Transaction Intelligence</h4>
                     <p className="text-sm text-muted-foreground mb-3">
                       Real-time fraud detection and risk scoring using ML models trained on millions of transactions
                     </p>
-                    <div className="text-xs text-accent font-medium">
+                    <div className="text-xs text-red-600 font-medium">
                       99.2% fraud detection rate
                     </div>
                   </div>
                 </div>
               </Card>
 
-              <Card className="banking-card p-6 hover:shadow-banking transition-all">
+              <Card className="banking-card p-6 hover:shadow-purple transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-warning/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <FileText className="w-6 h-6 text-warning" />
+                  <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Knowledge Orchestrator</h4>
                     <p className="text-sm text-muted-foreground mb-3">
                       Retrieves and synthesizes information from policies, procedures, and regulatory guidelines
                     </p>
-                    <div className="text-xs text-warning font-medium">
+                    <div className="text-xs text-purple-600 font-medium">
                       Access to 10,000+ documents
                     </div>
                   </div>
                 </div>
               </Card>
 
-              <Card className="banking-card p-6 hover:shadow-accent transition-all">
+              <Card className="banking-card p-6 hover:shadow-teal transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <CheckCircle2 className="w-6 h-6 text-success" />
+                  <div className="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="w-6 h-6 text-teal-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Resolution Engine</h4>
                     <p className="text-sm text-muted-foreground mb-3">
                       Executes complex workflows including payments, account updates, and dispute processing
                     </p>
-                    <div className="text-xs text-success font-medium">
+                    <div className="text-xs text-teal-600 font-medium">
                       Handles $2M+ daily volume
                     </div>
                   </div>
                 </div>
               </Card>
 
-              <Card className="banking-card p-6 hover:shadow-glow transition-all">
+              <Card className="banking-card p-6 hover:shadow-amber transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-banking-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <MessageSquare className="w-6 h-6 text-banking-accent" />
+                  <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <MessageSquare className="w-6 h-6 text-amber-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Communication AI</h4>
                     <p className="text-sm text-muted-foreground mb-3">
                       Generates personalized, compliant customer communications across multiple channels
                     </p>
-                    <div className="text-xs text-banking-accent font-medium">
+                    <div className="text-xs text-amber-600 font-medium">
                       95% customer satisfaction
                     </div>
                   </div>
