@@ -184,154 +184,136 @@ export function AgentOrchestrator({ caseId, onComplete }: AgentOrchestratorProps
   };
 
   return (
-    <div className="space-y-8">
-      {/* Pipeline Header */}
-      <div className="text-center border-b pb-6">
-        <h2 className="text-3xl font-bold mb-2">AI Agent Orchestration Pipeline</h2>
-        <p className="text-muted-foreground text-lg">Case ID: <span className="font-mono font-bold text-primary">{caseId}</span></p>
-        <p className="text-sm text-muted-foreground mt-2">
-          8 specialized agents processing your request sequentially with real-time updates
-        </p>
+    <div className="space-y-6">
+      {/* Compact Pipeline Header */}
+      <div className="text-center border-b pb-4">
+        <h2 className="text-2xl font-bold mb-1">AI Agent Pipeline</h2>
+        <p className="text-muted-foreground">Case ID: <span className="font-mono font-bold text-primary">{caseId}</span></p>
       </div>
 
-      {/* Horizontal Pipeline Overview */}
+      {/* Compact Horizontal Pipeline */}
       <Card className="border-2 border-primary/20">
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Live Agent Status Pipeline</CardTitle>
-          <CardDescription>Sequential processing with real-time status updates</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {/* Horizontal Agent Flow */}
-          <div className="flex items-center justify-between mb-8 overflow-x-auto min-w-full">
-            {agents.map((agent, index) => (
-              <div key={agent.id} className="flex items-center">
-                <div className="flex flex-col items-center min-w-24">
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
-                    agent.status === "completed" ? "bg-success border-4 border-success shadow-lg shadow-success/30" :
-                    agent.status === "processing" ? "bg-primary border-4 border-primary shadow-lg shadow-primary/30 animate-pulse-banking" :
-                    agent.status === "error" ? "bg-destructive border-4 border-destructive shadow-lg shadow-destructive/30" :
-                    "bg-muted border-4 border-muted"
-                  }`}>
-                    <agent.icon className={`w-7 h-7 ${
-                      agent.status === "completed" ? "text-white" :
-                      agent.status === "processing" ? "text-white" :
-                      agent.status === "error" ? "text-white" :
-                      "text-muted-foreground"
-                    }`} />
-                  </div>
-                  <h4 className="text-xs font-medium text-center leading-tight">{agent.name.replace(' Agent', '')}</h4>
-                  <Badge 
-                    variant={getStatusColor(agent.status) as any}
-                    className="mt-1 text-xs"
-                  >
-                    {agent.status}
-                  </Badge>
-                  {agent.status !== "pending" && (
-                    <div className="w-20 mt-2">
-                      <Progress value={agent.progress} className="h-1" />
-                    </div>
-                  )}
-                </div>
-                
-                {index < agents.length - 1 && (
-                  <ArrowRight className={`w-6 h-6 mx-3 ${
-                    agent.status === "completed" ? "text-success" :
-                    index === 0 || agents[index - 1]?.status === "completed" ? "text-primary" :
+        <CardContent className="p-4">
+          <div className="grid grid-cols-8 gap-2 mb-4">
+            {agents.map((agent) => (
+              <div key={agent.id} className="flex flex-col items-center">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 transition-all duration-300 ${
+                  agent.status === "completed" ? "bg-success border-2 border-success shadow-md" :
+                  agent.status === "processing" ? "bg-primary border-2 border-primary shadow-md animate-pulse" :
+                  agent.status === "error" ? "bg-destructive border-2 border-destructive shadow-md" :
+                  "bg-muted border-2 border-muted"
+                }`}>
+                  <agent.icon className={`w-5 h-5 ${
+                    agent.status === "completed" ? "text-white" :
+                    agent.status === "processing" ? "text-white" :
+                    agent.status === "error" ? "text-white" :
                     "text-muted-foreground"
                   }`} />
+                </div>
+                <h4 className="text-xs font-medium text-center leading-tight mb-1">{agent.name.replace(' Agent', '')}</h4>
+                <Badge variant={getStatusColor(agent.status) as any} className="text-xs px-1 py-0">
+                  {agent.status}
+                </Badge>
+                {agent.status !== "pending" && (
+                  <div className="w-16 mt-1">
+                    <Progress value={agent.progress} className="h-1" />
+                  </div>
                 )}
               </div>
             ))}
           </div>
+          
+          {/* Overall Progress */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>Overall Progress</span>
+              <span>{Math.round((agents.filter(a => a.status === "completed").length / agents.length) * 100)}%</span>
+            </div>
+            <Progress value={(agents.filter(a => a.status === "completed").length / agents.length) * 100} className="h-2" />
+          </div>
         </CardContent>
       </Card>
 
-      {/* Detailed Agent Outputs */}
-      <div className="space-y-6">
-        <h3 className="text-2xl font-bold">Agent Processing Details</h3>
-        <div className="grid gap-4">
-          {agents
-            .filter(agent => agent.output)
-            .map((agent, index) => {
-              const AgentIcon = agent.icon;
-              
-              return (
-                <Card key={agent.id} className="border-l-4 border-l-success">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
-                        <AgentIcon className="w-6 h-6 text-success" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-3">
-                          <h4 className="text-lg font-semibold">{agent.name}</h4>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="default" className="bg-success text-success-foreground">
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
-                              Completed
-                            </Badge>
-                            {agent.processingTime && (
-                              <span className="text-sm text-muted-foreground">
-                                {agent.processingTime.toFixed(1)}s
-                              </span>
-                            )}
+      {/* Agent Outputs - Compact Cards */}
+      {agents.filter(agent => agent.output).length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-xl font-bold">Agent Analysis Results</h3>
+          <div className="space-y-3">
+            {agents
+              .filter(agent => agent.output)
+              .map((agent) => {
+                const AgentIcon = agent.icon;
+                
+                return (
+                  <Card key={agent.id} className="border-l-4 border-l-success">
+                    <CardContent className="p-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <AgentIcon className="w-4 h-4 text-success" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-semibold">{agent.name}</h4>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="default" className="bg-success text-success-foreground text-xs">
+                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                                Done
+                              </Badge>
+                              {agent.processingTime && (
+                                <span className="text-xs text-muted-foreground">
+                                  {agent.processingTime.toFixed(1)}s
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="bg-muted/30 rounded-md p-3 border-l-2 border-l-success/50">
+                            <p className="text-sm leading-relaxed">{agent.output}</p>
                           </div>
                         </div>
-                        <div className="bg-muted/30 rounded-lg p-4 border-l-4 border-l-success/50">
-                          <p className="text-sm leading-relaxed">{agent.output}</p>
-                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                    </CardContent>
+                  </Card>
+                );
+              })}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Real-time Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* Compact Metrics */}
+      <div className="grid grid-cols-4 gap-3">
         <Card>
-          <CardContent className="p-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-success">
-                {agents.filter(a => a.status === "completed").length}
-              </div>
-              <p className="text-sm text-muted-foreground">Completed</p>
+          <CardContent className="p-3 text-center">
+            <div className="text-xl font-bold text-success">
+              {agents.filter(a => a.status === "completed").length}
             </div>
+            <p className="text-xs text-muted-foreground">Completed</p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary">
-                {agents.filter(a => a.status === "processing").length}
-              </div>
-              <p className="text-sm text-muted-foreground">Processing</p>
+          <CardContent className="p-3 text-center">
+            <div className="text-xl font-bold text-primary">
+              {agents.filter(a => a.status === "processing").length}
             </div>
+            <p className="text-xs text-muted-foreground">Processing</p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-muted-foreground">
-                {agents.filter(a => a.status === "pending").length}
-              </div>
-              <p className="text-sm text-muted-foreground">Pending</p>
+          <CardContent className="p-3 text-center">
+            <div className="text-xl font-bold text-muted-foreground">
+              {agents.filter(a => a.status === "pending").length}
             </div>
+            <p className="text-xs text-muted-foreground">Pending</p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardContent className="p-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold">
-                {Math.round((agents.filter(a => a.status === "completed").length / agents.length) * 100)}%
-              </div>
-              <p className="text-sm text-muted-foreground">Complete</p>
+          <CardContent className="p-3 text-center">
+            <div className="text-xl font-bold">
+              {Math.round((agents.filter(a => a.status === "completed").length / agents.length) * 100)}%
             </div>
+            <p className="text-xs text-muted-foreground">Complete</p>
           </CardContent>
         </Card>
       </div>
