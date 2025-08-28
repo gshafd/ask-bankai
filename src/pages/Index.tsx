@@ -137,10 +137,10 @@ const Index = () => {
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
                 <span className="bg-gradient-primary bg-clip-text text-transparent">
-                  Autonomous
+                  Customer Service
                 </span>
                 <br />
-                <span className="text-foreground">Banking AI</span>
+                <span className="text-foreground">Orchestrator</span>
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
